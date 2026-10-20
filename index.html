@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="theme-color" content="#101519"/>
+<meta name="description" content="Kettlewink interactive bilingual concept demo for Zezo & Demo Barbershop. Not a live WhatsApp service."/>
+<title>Kettlewink × Zezo & Demo | Bilingual concept demo</title>
+<style>
+    :root { color-scheme: dark; --bg:#0c1013; --panel:#18232a; --panel2:#202e35; --line:#304047; --text:#f1f5f4; --muted:#adc0c0; --green:#25d366; --out:#075e4a; --purple:#b9a2ff; --radius:18px; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:radial-gradient(ellipse at 20% 10%,#202039 0%,#101518 45%,#0b0f12 100%); color:var(--text); font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif; }
+    button,input,a { font:inherit; }
+    button { cursor:pointer; }
+    button:focus-visible,input:focus-visible,a:focus-visible { outline:3px solid #b3c4ff; outline-offset:3px; }
+    .page { max-width:1130px; margin:auto; min-height:100dvh; padding:24px; display:grid; grid-template-columns:minmax(0,1fr) 330px; gap:24px; align-items:start; }
+    .side { display:flex; flex-direction:column; gap:14px; padding-top:18px; }
+    .eyebrow { display:flex; align-items:center; gap:9px; color:var(--purple); font-size:13px; font-weight:700; letter-spacing:.03em; }
+    .brandmark { height:33px; width:33px; display:grid; place-items:center; font-size:17px; border-radius:10px; background:#352b53; }
+    h1 { font-size:32px; line-height:1.3; margin:12px 0; letter-spacing:-.02em; }
+    .description { color:var(--muted); margin:0 0 6px; }
+    .panel { background:#181f27c9; border:1px solid #343c4a; border-radius:17px; padding:17px; }
+    .panel h2 { margin:0 0 9px; font-size:16px; }
+    .panel p { color:var(--muted); margin:0 0 9px; font-size:13px; }
+    .panel p:last-child { margin-bottom:0; }
+    .pill { display:inline-flex; background:#352b53; padding:4px 10px; color:#dfd2ff; font-size:12px; font-weight:700; border-radius:99px; }
+    .statlist { margin:0; padding:0 17px 0 0; color:#d7e5e5; font-size:14px; line-height:1.9; }
+    .small { font-size:12px; color:#a9bcbd; }
+    .chatframe { min-width:0; width:100%; max-width:625px; margin:0 auto; height:min(805px, calc(100dvh - 48px)); min-height:570px; background:#0b1619; border:1px solid #39464d; border-radius:23px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 65px #0008; position:relative; }
+    .chathead { background:#1e3035; padding:11px 14px; display:flex; align-items:center; gap:11px; border-bottom:1px solid #355053; z-index:2; }
+    .avatar { width:43px; height:43px; border-radius:100px; display:grid; place-items:center; flex:none; font-size:23px; background:linear-gradient(135deg,#5738b5,#172b36); border:1px solid #7d79b6; }
+    .chatname { font-weight:800; font-size:15px; line-height:1.3; }
+    .chatstatus { color:#b7d3cc; font-size:11px; }
+    .demo-label { margin-right:auto; color:#fee7a6; border:1px solid #a88f4b; border-radius:99px; padding:2px 9px; font-size:11px; white-space:nowrap; }
+    .reset-btn { border:0; background:transparent; color:#bfd1cc; font-size:22px; padding:2px 6px; border-radius:9px; line-height:1; }
+    .reset-btn:hover { background:#34474d; }
+    .notice { padding:8px 14px; background:#332f1e; border-bottom:1px solid #5b5332; font-size:11.5px; color:#f0db9a; text-align:center; }
+    .messages { background-color:#0c191b; background-image:radial-gradient(#1d3334 1px,transparent 1px),radial-gradient(#1c3234 .7px,transparent 1px); background-size:35px 35px,25px 25px; background-position:0 0,12px 17px; overflow:auto; flex:1; padding:16px 15px 26px; overscroll-behavior:contain; }
+    .bubble { max-width:90%; width:max-content; min-width:105px; margin-bottom:10px; padding:9px 13px 7px; border-radius:15px; box-shadow:0 2px 4px #0002; white-space:pre-wrap; overflow-wrap:anywhere; animation:fade .16s ease-out; }
+    .bubble.bot { background:#25373b; margin-left:auto; border-top-right-radius:4px; }
+    .bubble.user { background:#075948; margin-right:auto; border-top-left-radius:4px; }
+    .bubble .stamp { display:block; text-align:left; font-size:10px; color:#c0d1cbab; margin-top:3px; direction:ltr; }
+    @keyframes fade { from { opacity:.2; transform:translateY(5px); } to {opacity:1;transform:translateY(0)} }
+    .choices { display:flex; gap:7px; flex-wrap:wrap; margin:3px 0 15px; max-width:96%; }
+    .choice { background:#213b39; border:1px solid #347d66; color:#e8fff4; border-radius:13px; padding:9px 12px; font-weight:700; font-size:13px; text-align:right; }
+    .choice:hover { background:#295448; border-color:#58bd9b; }
+    .choice:disabled { opacity:.35; cursor:not-allowed; }
+    .composercard { background:#1a2b30; border-top:1px solid #37565a; padding:10px 12px max(10px,env(safe-area-inset-bottom)); }
+    .formrow { display:flex; gap:9px; align-items:center; }
+    .entry { border:1px solid #44575c; background:#294046; color:#fff; border-radius:14px; flex:1; min-width:0; min-height:44px; font-size:14px; padding:9px 12px; }
+    input[type="date"],input[type="time"] { color-scheme:dark; }
+    .send { background:#24b865; color:#062618; border:0; border-radius:12px; font-size:20px; min-width:46px; height:44px; font-weight:900; }
+    .send:disabled { opacity:.55; cursor:not-allowed; }
+    .composerhint { font-size:11px; color:#a6bfc0; margin-top:5px; }
+    .quick { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; margin:10px auto 0; }
+    .quick button { color:#b5d9c6; border:1px solid #3f6656; background:transparent; border-radius:100px; font-size:12px; padding:5px 13px; }
+    .quick button:hover { background:#28493b; }
+    .caption { margin-top:5px; font-size:13px; color:#95b4ba; }
+    .msgTag { font-weight:800; font-size:12px; color:#b0ecce; }
+    @media(max-width:850px) { .page { grid-template-columns:1fr; gap:15px; padding:10px; } .side { padding:2px 5px 0; } .side h1 { font-size:19px; margin:4px 0; } .side .description { font-size:12px; } .panel { display:none; } .chatframe { height:calc(100dvh - 115px); min-height:530px; max-width:none; border-radius:18px; } }
+    @media(max-width:390px) { .side h1 { font-size:17px; } .chatframe { min-height:510px; height:calc(100dvh - 110px); } .chathead {gap:8px;} .demo-label {font-size:10px; padding:2px 6px;} .avatar { width:39px;height:39px;} .messages { padding:12px 9px 17px; } .bubble { font-size:13px; } }
+  
+    .lang-picker { display:flex; gap:4px; background:#15272c; border:1px solid #355159; border-radius:10px; padding:3px; margin-inline-start:auto; flex:none; }
+    .lang-picker button { color:#bfd3cb; background:transparent; border:0; font-size:12px; border-radius:7px; min-height:30px; padding:3px 8px; }
+    .lang-picker button.active { background:#256d56; color:white; font-weight:800; }
+    .demo-label { margin-right:0; margin-left:0; }
+    .messages { direction:inherit; }
+    .bubble.bot { margin-inline-end:auto; margin-inline-start:0; border-radius:15px; border-start-start-radius:4px; }
+    .bubble.user { margin-inline-start:auto; margin-inline-end:0; border-radius:15px; border-start-end-radius:4px; }
+    .choice { text-align:start; }
+    .formrow { direction:inherit; }
+    [dir="ltr"] .statlist { padding:0 0 0 17px; }
+    .chatname { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:240px; }
+    @media(max-width:480px){.chathead{gap:6px;padding:10px 8px}.avatar{height:35px;width:35px;font-size:17px}.chatname{font-size:12px;max-width:150px}.chatstatus{font-size:10px}.lang-picker button{font-size:10px;padding:2px 6px}.demo-label{font-size:9px;padding:2px 4px}}
+
+/* A clearly visible language selector on desktop and mobile. */
+.lang-picker button { min-height:36px; padding:5px 9px; font-size:13px; font-weight:750; }
+@media (max-width:390px) {
+  .chatname { max-width:105px; }
+  .lang-picker button { min-height:36px; padding:4px 6px; font-size:12px; }
+  .lang-picker { gap:2px; }
+}
+</style></head><body>
+<div class="page">
+ <main class="chatframe" aria-label="Zezo & Demo concept demo">
+  <header class="chathead">
+   <div class="avatar" aria-hidden="true">💈</div>
+   <div><div class="chatname">Zezo & Demo Barbershop</div><div class="chatstatus" id="status">مساعد تجريبي بواسطة Kettlewink</div></div>
+   <div class="lang-picker" role="group" aria-label="Language selection">
+    <button type="button" id="arButton" class="active" aria-pressed="true">عربي</button>
+    <button type="button" id="enButton" aria-pressed="false">English</button>
+   </div>
+   <button class="reset-btn" id="resetTop" title="Restart" aria-label="Restart">↻</button>
+  </header>
+  <div class="notice" id="notice">نموذج تجريبي فقط • غير متصل بواتساب • لا يرسل حجوزات</div>
+  <section class="messages" id="messages" role="log" aria-live="polite" aria-label="Demo chat"></section>
+  <form class="composercard" id="composer">
+   <div class="formrow"><input id="entry" class="entry" autocomplete="off" aria-label="Message" placeholder="اكتب سؤالك هنا..."/><button type="submit" id="send" class="send" aria-label="Send">➤</button></div>
+   <div id="hint" class="composerhint">جرّب: الأسعار أو الحجز أو المواعيد</div>
+   <div class="quick"><button type="button" id="homeBtn">⌂ القائمة الرئيسية</button><button type="button" id="resetBtn">↻ إعادة التجربة</button></div>
+  </form>
+ </main>
+ <aside class="side" aria-label="Demo information">
+  <div class="eyebrow"><span class="brandmark">✦</span> KETTLEWINK <span class="pill">Prototype</span></div>
+  <h1 id="sideTitle">جرّب مساعد Zezo & Demo بنفسك</h1>
+  <p class="description" id="sideDesc">جرّب الأسعار والمواعيد وطلب حجز — بالعربي أو English.</p>
+  <div class="panel"><h2 id="panel1Title">الديمو ده بيعمل إيه؟</h2><ul class="statlist" id="sideList"></ul></div>
+  <div class="panel"><h2 id="panel2Title">تنبيه مهم</h2><p id="sideWarning"></p></div>
+  <p class="small" id="sideFooter">Concept demo. No WhatsApp integration or actual bookings.</p>
+ </aside>
+</div>
+<script>
+(() => {
+ 'use strict';
+ const L = {
+ ar: {
+  status:'مساعد تجريبي بواسطة Kettlewink',notice:'نموذج تجريبي فقط • غير متصل بواتساب • لا يرسل حجوزات',sideTitle:'جرّب مساعد Zezo & Demo بنفسك',sideDesc:'اسأل عن الأسعار، المواعيد أو جرّب طلب حجز — بالعربي أو بالإنجليزي.',panel1Title:'الديمو ده بيعمل إيه؟',sideList:['الخدمات وأسعارها الحقيقية','المواعيد: من 11 صباحًا حتى 3 فجرًا','الباقات والضيافة المجانية','طلب حجز يحتاج تأكيد صاحب المحل'],panel2Title:'تنبيه مهم',sideWarning:'دي محاكاة في المتصفح، مش واتساب حقيقي. مش بنبعت رسائل أو نحجز مواعيد. صاحب المحل هو اللي هيأكد الحجز في النظام الحقيقي.',sideFooter:'نموذج Kettlewink تجريبي — مش واتساب حقيقي.',home:'⌂ القائمة الرئيسية',restart:'↻ إعادة التجربة',placeholder:'اكتب سؤالك هنا...',hint:'جرّب تكتب: أسعار، حجز، مواعيد، باقات، لوكيشن',intro:'أهلاً بيك في Zezo & Demo Barbershop 💈\\nإحنا هنا عشان نساعدك. تحب تعرف إيه؟',backIntro:'تمام! تحب تعرف إيه؟',priceBtn:'💈 الخدمات والأسعار',packageBtn:'📦 الباقات',hoursBtn:'🕒 مواعيد الشغل',locBtn:'📍 اللوكيشن',freeBtn:'☕ الضيافة المجانية',bookBtn:'📅 طلب حجز',backBtn:'↩ القائمة الرئيسية', pricesIntro:'دي أسعار الخدمات (بالجنيه المصري):',egp:'جنيه',priceClosing:'تحب تحجز خدمة؟',packagesIntro:'الباقات المتاحة:',groom:'باكدج العريس بيبدأ من 1500 جنيه.',packagesClosing:'تحب تحجز؟',hours:'مواعيد Zezo & Demo من 11 صباحًا لحد 3 الفجر تاني يوم. 🕒\\nاختار ميعاد داخل الأوقات دي، وصاحب المحل هيأكد التوفر.',location:'المحل في الشيخ زايد 📍\\nللوكيشن التفصيلي تقدر تسأل المحل. ده مجرد ديمو غير متصل بواتساب.',free:'المشروب الساخن والمياه ضيافة مجانية مع الزيارة ☕💧\\nالخدمات المذكورة في قائمة الأسعار مدفوعة.',serviceQ:'تمام! تحب تحجز أنهي خدمة؟ 💈',another:'خدمة تانية',servicePlaceholder:'اسم الخدمة...',serviceHint:'اختار الخدمة أو اكتب اسمها',serviceAsk:'اكتب اسم الخدمة اللي عايزها.',nameQ:'تمام، عايز نسجل الطلب باسم مين؟',namePlaceholder:'اسم العميل',nameHint:'اكتب اسمًا تجريبيًا؛ بياناتك مش بتتبعت لأي مكان.',nameShort:'اكتب اسم من حرفين على الأقل.',serviceShort:'اكتب اسم الخدمة عشان نكمل.',dateQ:'تشرفنا! تختار يوم إيه؟',dateHint:'اختار التاريخ اللي يناسبك.',dateInvalid:'اختار تاريخ صحيح.',datePast:'اختار النهارده أو يوم بعده.',timeQ:'تمام. الساعة كام تحب تيجي؟\\nالمحل فاتح من 11 الصبح لحد 3 الفجر.',timeHint:'المواعيد من 11 صباحًا إلى قبل 3 فجرًا.',timeInvalid:'اختار ساعة صحيحة.',timeOutside:'المحل شغال من 11 الصبح لحد 3 الفجر. اختار ميعاد داخل مواعيد العمل.',done:'وصلنا لملخص طلب الحجز التجريبي ✅',name:'الاسم',service:'الخدمة',day:'اليوم',time:'الوقت',notSent:'⚠️ ده ديمو فقط: الطلب ما اتبعتش للمحل، والحجز مش متأكد.\\nفي النظام الحقيقي، علي في المحل هيأكد الميعاد بنفسه.',copy:'📋 انسخ تفاصيل الطلب',newBooking:'📅 طلب جديد',copySuccess:'تم نسخ ملخص الطلب. بس ما اتبعتش للمحل.',copyFail:'النسخ مش متاح في المتصفح ده، ممكن تعمل لقطة شاشة.',unknown:'مش متأكد من إجابة السؤال ده. في النظام الحقيقي هنسأل فريق المحل. تحب تعرف الأسعار أو تحجز؟',resetHint:'ممكن تسأل سؤال تاني أو تبدأ من الأول.',samplePrices:'شوف الباقات',book:'احجز ميعاد',inputText:'اسأل سؤال تاني...'
+ },
+ en: {
+  status:'Kettlewink concept assistant',notice:'Concept demo only • Not connected to WhatsApp • No bookings are sent',sideTitle:'Try the Zezo & Demo assistant',sideDesc:'Explore prices, hours and booking requests in English or Egyptian Arabic.',panel1Title:'What this demo covers',sideList:['Real services and listed prices','Hours: 11:00 AM to 3:00 AM next day','Packages and complimentary refreshments','Booking requests pending the shop owner’s confirmation'],panel2Title:'Important note',sideWarning:'This is an interactive browser simulation, not a live WhatsApp bot. It sends no messages and does not book appointments. In a real system, the shop owner confirms requests.',sideFooter:'Kettlewink concept demo — no live WhatsApp connection.',home:'⌂ Main menu',restart:'↻ Restart demo',placeholder:'Type your question...',hint:'Try: prices, book, hours, packages, location',intro:'Welcome to Zezo & Demo Barbershop 💈\\nHow can we help you today?',backIntro:'What else can we help you with?',priceBtn:'💈 Services & prices',packageBtn:'📦 Packages',hoursBtn:'🕒 Opening hours',locBtn:'📍 Location',freeBtn:'☕ Complimentary drinks',bookBtn:'📅 Booking request',backBtn:'↩ Main menu',pricesIntro:'Our services and prices (EGP):',egp:'EGP',priceClosing:'Would you like to request an appointment?',packagesIntro:'Available packages:',groom:'Groom package starts from 1,500 EGP.',packagesClosing:'Would you like to request a booking?',hours:'Zezo & Demo is open from 11:00 AM until 3:00 AM the next day. 🕒\\nChoose a preferred time during these hours; the shop owner will confirm availability.',location:'The shop is in Sheikh Zayed, Egypt 📍\\nAsk the shop for the exact pin. This concept demo isn’t connected to WhatsApp.',free:'Hot drinks and water are complimentary with your visit ☕💧\\nThe listed barber services are not free.',serviceQ:'Sure! Which service would you like? 💈',another:'Another service',servicePlaceholder:'Service name...',serviceHint:'Choose a service or type its name.',serviceAsk:'Please type the service you would like.',nameQ:'Great! What name should we put on the request?',namePlaceholder:'Customer name',nameHint:'Please use a sample name; nothing is sent anywhere.',nameShort:'Please enter a name of at least two characters.',serviceShort:'Please enter a service name.',dateQ:'Nice to meet you! What date would you prefer?',dateHint:'Choose your preferred date.',dateInvalid:'Please choose a valid date.',datePast:'Please choose today or a future date.',timeQ:'What time would you like?\\nOpening hours are 11 AM to 3 AM the next day.',timeHint:'Choose a time from 11 AM up to (but not including) 3 AM.',timeInvalid:'Please enter a valid time.',timeOutside:'The shop is open 11 AM to 3 AM. Please choose a time during opening hours.',done:'Here is your sample booking request ✅',name:'Name',service:'Service',day:'Date',time:'Time',notSent:'⚠️ Demo only: this request was NOT sent and your appointment is NOT confirmed.\\nIn a live system, Ali at the barbershop would confirm the booking himself.',copy:'📋 Copy request',newBooking:'📅 New request',copySuccess:'Copied the sample request. Nothing was sent to the shop.',copyFail:'Copying is unavailable in this browser; you can take a screenshot.',unknown:'I’m not sure about that. In the real system, the salon team would help you. Would you like prices or a booking?',resetHint:'Ask another question or restart.',samplePrices:'View packages',book:'Book an appointment',inputText:'Ask another question...'
+ }
+ };
+ const services = [
+  ['قص شعر','Haircut',150],['دقن','Beard trim',100],['شعر ودقن','Haircut + beard',250],['سشوار','Blow-dry',100],
+  ['تنظيف بشرة','Facial cleansing','from 400'],['صبغة هير لايت','Hair light dye',600],['صبغة شعر','Hair dye',200],['صبغة دقن','Beard dye',100],
+  ['فتلة','Threading',50],['شمع','Waxing',100],['حمام زيت عادي','Regular oil treatment',150],['حمام زيت سبشيل','Special oil treatment',300],
+  ['أمبول للقشرة','Anti-dandruff ampoule',70],['أمبول كولاجين للشعر','Collagen hair ampoule',100],['شيت ماسك + لزقة عين + لزقة أنف','Sheet mask + eye + nose patches',200],
+  ['بروتين','Protein treatment','from 600'],['باكدج العريس','Groom package','from 1500']
+ ];
+ const packages = [
+  ['قص شعر + حمام زيت + أمبول قشرة + تنظيف بشرة','Haircut + oil treatment + anti-dandruff ampoule + facial cleansing',650],
+  ['قص شعر + دقن + حمام زيت + أمبول قشرة + تنظيف بشرة + سشوار ويفي أو ستريت','Haircut + beard + oil treatment + anti-dandruff ampoule + facial cleansing + wavy or straight blow-dry',750]
+ ];
+ const $ = sel => document.querySelector(sel);
+ const messages=$('#messages'), entry=$('#entry'), hint=$('#hint'), form=$('#composer');
+ let lang='ar', state='menu', booking={}, buttons=null;
+ const t=k=>L[lang][k];
+ const nameAt=a=>a[lang==='ar'?0:1];
+ const price=v=>typeof v==='number'?`${v} ${t('egp')}`:(lang==='ar'?`${v.replace('from ','يبدأ من ')} جنيه`:`${v} EGP`);
+ function scrollEnd(){messages.scrollTop=messages.scrollHeight;}
+ function stamp(){return new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit'}).format(new Date());}
+ function message(v,who='bot'){
+  const b=document.createElement('div'); b.className='bubble '+who; b.setAttribute('dir',lang==='ar'?'rtl':'ltr');
+  const s=document.createElement('span');s.textContent=v;b.append(s);
+  const tm=document.createElement('span');tm.className='stamp';tm.textContent=stamp()+(who==='user'?'  ✓✓':'');b.append(tm);
+  messages.append(b);scrollEnd();
+ }
+ function choices(list){
+  if(buttons)buttons.remove();const holder=document.createElement('div');holder.className='choices';buttons=holder;
+  for(const [label,action] of list){const el=document.createElement('button');el.className='choice';el.type='button';el.textContent=label;
+   el.addEventListener('click',()=>{holder.remove();if(buttons===holder)buttons=null;message(label,'user');action();});holder.append(el);
+  }messages.append(holder);scrollEnd();
+ }
+ function setComposer(type='text',placeholder=t('placeholder'),help=t('hint')){
+  entry.type=type;entry.value='';entry.placeholder=placeholder;hint.textContent=help;entry.required=state!=='menu';
+  if(type==='date'){const now=new Date(); const local=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;entry.min=local;}
+  else entry.removeAttribute('min');
+ }
+ function menu(first=false){state='menu';booking={};setComposer();message(first?t('intro'):t('backIntro'));choices([
+  [t('priceBtn'),showPrices],[t('packageBtn'),showPackages],[t('hoursBtn'),showHours],
+  [t('locBtn'),showLocation],[t('freeBtn'),showFree],[t('bookBtn'),startBooking]
+ ]);}
+ function withChoice(txt,choicesList){state='menu';setComposer();message(txt);choices(choicesList);}
+ function showPrices(){withChoice(t('pricesIntro')+'\n\n'+services.map(x=>`• ${nameAt(x)}: ${price(x[2])}`).join('\n')+'\n\n'+t('priceClosing'),[[t('bookBtn'),startBooking],[t('packageBtn'),showPackages],[t('backBtn'),()=>menu()]]);}
+ function showPackages(){withChoice(t('packagesIntro')+'\n\n'+packages.map(x=>`• ${nameAt(x)}\n  ${price(x[2])}`).join('\n\n')+'\n\n'+t('groom')+'\n'+t('packagesClosing'),[[t('bookBtn'),startBooking],[t('backBtn'),()=>menu()]]);}
+ function showHours(){withChoice(t('hours'),[[t('bookBtn'),startBooking],[t('backBtn'),()=>menu()]]);}
+ function showLocation(){withChoice(t('location'),[[t('bookBtn'),startBooking],[t('backBtn'),()=>menu()]]);}
+ function showFree(){withChoice(t('free'),[[t('priceBtn'),showPrices],[t('backBtn'),()=>menu()]]);}
+ function startBooking(){state='service';booking={};setComposer('text',t('servicePlaceholder'),t('serviceHint'));message(t('serviceQ'));
+  choices([
+   [nameAt(services[0])+' — '+price(150),()=>chooseService(nameAt(services[0]))],
+   [nameAt(services[1])+' — '+price(100),()=>chooseService(nameAt(services[1]))],
+   [nameAt(services[2])+' — '+price(250),()=>chooseService(nameAt(services[2]))],
+   [t('another'),()=>{state='service';message(t('serviceAsk'));setComposer('text',t('servicePlaceholder'),t('serviceHint'));}]
+  ]);
+ }
+ function chooseService(v){booking.service=v;state='name';setComposer('text',t('namePlaceholder'),t('nameHint'));message(t('nameQ'));}
+ const displayDate=v=>{const [y,m,d]=v.split('-');return `${d}/${m}/${y}`;};
+ function onStep(v){
+  if(state==='service'){if(v.length<2){message(t('serviceShort'));return;}message(v,'user');chooseService(v);return;}
+  if(state==='name'){if(v.length<2){message(t('nameShort'));return;}booking.name=v;message(v,'user');state='date';setComposer('date','',t('dateHint'));message(t('dateQ'));return;}
+  if(state==='date'){if(!/^\d{4}-\d{2}-\d{2}$/.test(v)){message(t('dateInvalid'));return;}
+   const today=new Date();today.setHours(0,0,0,0);const selected=new Date(v+'T12:00:00');
+   if(Number.isNaN(selected.getTime())){message(t('dateInvalid'));return;}
+   if(selected<today){message(t('datePast'));return;}
+   booking.date=v;message(displayDate(v),'user');state='time';setComposer('time','',t('timeHint'));message(t('timeQ'));return;
+  }
+  if(state==='time'){
+   if(!/^\d{2}:\d{2}$/.test(v)){message(t('timeInvalid'));return;}
+   const [hours,mins]=v.split(':').map(Number);const minute=hours*60+mins;
+   if(!(minute>=660||minute<180)){message(t('timeOutside'));return;}
+   booking.time=v;message(v,'user');state='done';setComposer('text',t('inputText'),t('resetHint'));
+   message(`${t('done')}\n\n${t('name')}: ${booking.name}\n${t('service')}: ${booking.service}\n${t('day')}: ${displayDate(booking.date)}\n${t('time')}: ${booking.time}\n\n${t('notSent')}`);
+   choices([[t('copy'),copyBooking],[t('backBtn'),()=>menu()],[t('newBooking'),startBooking]]);
+  }
+ }
+ async function copyBooking(){const text=`DEMO — NOT SENT\n${t('name')}: ${booking.name}\n${t('service')}: ${booking.service}\n${t('day')}: ${displayDate(booking.date)}\n${t('time')}: ${booking.time}`;
+  try{await navigator.clipboard.writeText(text);message(t('copySuccess'));}catch(err){message(t('copyFail'));}
+  choices([[t('backBtn'),()=>menu()],[t('newBooking'),startBooking]]);
+ }
+ function query(v){
+  if(/(حجز|احجز|احجزلي|ميعاد|book|appointment|reservation)/i.test(v))return startBooking();
+  if(/(باقة|باقات|باكدج|عريس|package|bundle)/i.test(v))return showPackages();
+  if(/(اسعار|الأسعار|الاسعار|سعر|بكام|تكلفة|price|services|خدمات|خدمة|haircut|قص|beard)/i.test(v))return showPrices();
+  if(/(مواعيد|معاد|مفتوح|ساعات|فاتح|ساعة|hours|time|open|close)/i.test(v))return showHours();
+  if(/(فين|مكان|موقع|لوكيشن|location|address|where)/i.test(v))return showLocation();
+  if(/(مجاني|فري|مشروب|مياه|قهوة|ضيافة|free|drink|water|coffee)/i.test(v))return showFree();
+  withChoice(t('unknown'),[[t('priceBtn'),showPrices],[t('bookBtn'),startBooking],[t('backBtn'),()=>menu()]]);
+ }
+ form.addEventListener('submit',ev=>{ev.preventDefault();const v=entry.value.trim();if(!v)return;
+  if(['service','name','date','time'].includes(state))onStep(v); else {message(v,'user');query(v);}
+ });
+ function updateUI(){document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+  for(const id of ['status','notice','sideTitle','sideDesc','panel1Title','panel2Title','sideWarning','sideFooter']){$('#'+id).textContent=t(id);}
+  $('#sideList').replaceChildren(...t('sideList').map(s=>{const li=document.createElement('li');li.textContent=s;return li;}));
+  $('#homeBtn').textContent=t('home');$('#resetBtn').textContent=t('restart');
+  for(const [id,l] of [['arButton','ar'],['enButton','en']]){$('#'+id).classList.toggle('active',lang===l);$('#'+id).setAttribute('aria-pressed',String(lang===l));}
+ }
+ function reset(){messages.replaceChildren();buttons=null;updateUI();menu(true);}
+ $('#arButton').addEventListener('click',()=>{if(lang!=='ar'){lang='ar';reset();}});
+ $('#enButton').addEventListener('click',()=>{if(lang!=='en'){lang='en';reset();}});
+ $('#resetBtn').addEventListener('click',reset);$('#resetTop').addEventListener('click',reset);
+ $('#homeBtn').addEventListener('click',()=>{if(buttons){buttons.remove();buttons=null;}menu();});
+ reset();
+})();
+</script>
+</body></html>
